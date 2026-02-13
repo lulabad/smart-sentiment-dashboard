@@ -25,7 +25,7 @@ export default function Home() {
           ℹ️ Wie funktioniert es?
         </h3>
         <p className="text-blue-800">
-          Gib einen Text ein und klicke auf "Analysieren". Das System verwendet
+          Gib einen Text ein und klicke auf &quot;Analysieren&quot;. Das System verwendet
           ein vortrainiertes DistilBERT-Modell von Hugging Face, um die Stimmung
           (positiv, negativ oder neutral) zu erkennen und eine Konfidenz-Bewertung
           zu liefern.
