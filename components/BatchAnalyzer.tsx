@@ -9,6 +9,7 @@ export default function BatchAnalyzer() {
   const [texts, setTexts] = useState("");
   const [results, setResults] = useState<SentimentResult[]>([]);
   const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState("");
 
   async function handleBatchAnalyze() {
     const textLines = texts
@@ -17,20 +18,20 @@ export default function BatchAnalyzer() {
       .filter((line) => line.length > 0);
 
     if (textLines.length === 0) {
-      alert("Bitte geben Sie mindestens einen Text ein");
+      setError("Bitte geben Sie mindestens einen Text ein");
       return;
     }
 
+    setError("");
     startTransition(async () => {
-      const batchResults: SentimentResult[] = [];
-
-      for (const text of textLines) {
+      // Process all texts concurrently for better performance
+      const analysisPromises = textLines.map(async (text) => {
         const formData = new FormData();
         formData.append("text", text);
-        const analysis = await analyzeSentiment(formData);
-        batchResults.push(analysis);
-      }
+        return await analyzeSentiment(formData);
+      });
 
+      const batchResults = await Promise.all(analysisPromises);
       setResults(batchResults);
     });
   }
@@ -49,6 +50,12 @@ export default function BatchAnalyzer() {
           rows={8}
         />
       </div>
+
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <p className="text-red-800 text-sm">{error}</p>
+        </div>
+      )}
 
       <button
         onClick={handleBatchAnalyze}

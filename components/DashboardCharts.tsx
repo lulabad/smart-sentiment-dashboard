@@ -63,7 +63,7 @@ export default function DashboardCharts({ data }: Props) {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="count" />
+            <Bar dataKey="count" fill="#8884d8" />
           </BarChart>
         </ResponsiveContainer>
       </div>
